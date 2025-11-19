@@ -17,6 +17,9 @@ const WIN_PATTERNS = [
 ];
 
 export const GameView: React.FC<GameViewProps> = ({ scores, onWin, onBack }) => {
+  // Track who started the current game
+  const [startingPlayer, setStartingPlayer] = useState<Player>('O');
+  
   const [currentPlayer, setCurrentPlayer] = useState<Player>('O');
   const [xMoves, setXMoves] = useState<number[]>([]);
   const [oMoves, setOMoves] = useState<number[]>([]);
@@ -75,7 +78,11 @@ export const GameView: React.FC<GameViewProps> = ({ scores, onWin, onBack }) => 
     setXMoves([]);
     setOMoves([]);
     setWinState({ winner: null, line: null });
-    setCurrentPlayer('O');
+    
+    // Alternate starting player
+    const nextStarter = startingPlayer === 'O' ? 'X' : 'O';
+    setStartingPlayer(nextStarter);
+    setCurrentPlayer(nextStarter);
   };
 
   const dyingPieceIndex = (() => {
